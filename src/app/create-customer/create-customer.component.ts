@@ -26,7 +26,6 @@ export class CreateCustomerComponent {
     country: new FormControl('', Validators.required),
   });
 
-  disabled: boolean = false;
   searching: boolean = false;
   searchingCountry: boolean = false;
   searchFailed: boolean = false;
