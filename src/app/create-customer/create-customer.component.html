@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Customer</h4>
+    <button type="button" data-dismiss="modal" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <form #form="ngForm" [formGroup]="registerUser" (ngSubmit)="onSubmit($event)" class="form">
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="email" class="fw-bold">Email</label>
+            <input id="email" type="email" placeholder="Enter your email" formControlName="email" class="form-control"
+                   [ngClass]="{ 'is-invalid': form.submitted && registerUser.controls.email.invalid }">
+            <div *ngIf="form.submitted && registerUser.controls.email.invalid" class="text-danger">
+              <small *ngIf="registerUser.controls.email.errors?.['required']">Email is required.</small>
+              <small *ngIf="registerUser.controls.email.errors?.['email']">Email is invalid.</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name" class="fw-bold">Name</label>
+            <input id="name" type="text" formControlName="name" placeholder="Enter your name" class="form-control"
+                   [ngClass]="{ 'is-invalid': form.submitted && registerUser.controls.name.invalid }">
+                        <div *ngIf="form.submitted && registerUser.controls.name.invalid" class="text-danger">
+                          <small *ngIf="registerUser.controls.name.errors?.['required']">Name is required.</small>
+                        </div>
+          </div>
+          <div class="form-group">
+            <label for="region" class="fw-bold">Region</label>
+            <input id="region" type="text" formControlName="region" placeholder="Type your region" class="form-control"
+                   [editable]="false" (selectItem)="regionSelected = true"
+                   [ngbTypeahead]="searchRegion" [inputFormatter]="formatter" [resultTemplate]="regionTmp"
+                   [ngClass]="{ 'is-invalid': form.submitted && registerUser.controls.region.invalid }">
+            <ng-template #regionTmp let-r="result" let-t="term">
+              <div class="rounded-3 p-2">
+                {{ r }}
+              </div>
+            </ng-template>
+            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+            <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+            <div *ngIf="form.submitted && registerUser.controls.region.invalid" class="text-danger">
+              <small *ngIf="registerUser.controls.region.errors?.['required']">Region is required.</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="country" class="fw-bold">Country</label>
+            <input id="country" type="text" formControlName="country" placeholder="Type your country" class="form-control"
+                   [editable]="false"
+                   [ngbTypeahead]="searchCountry" [inputFormatter]="formatter" [resultTemplate]="countryTmp"
+                   [ngClass]="{ 'is-invalid': form.submitted && registerUser.controls.country.invalid }">
+            <ng-template #countryTmp let-r="result" let-t="term">
+              <div class="rounded-3 p-2 h-25 overflow-auto">
+                {{ r }}
+              </div>
+            </ng-template>
+            <small *ngIf="searchingCountry" class="form-text text-muted">searching...</small>
+            <div *ngIf="form.submitted && registerUser.controls.country.invalid || !regionSelected" class="text-danger">
+              <small *ngIf="regionSelected && registerUser.controls.country.errors?.['required']">Country is required.</small>
+              <small *ngIf="!regionSelected">Please select Region first</small>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button [disabled]="disabled" type="submit" class="btn btn-primary">Add Customer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  

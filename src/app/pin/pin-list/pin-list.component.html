@@ -1,0 +1,42 @@
+<div class="table-responsive" *ngIf="pins && pins.length > 0; else noData">
+  <table class="table table-hover table-striped table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Image</th>
+      <th scope="col">Collaborators</th>
+      <th scope="col">Privacy</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let pin of pins">
+      <tr>
+        <td>{{ pin.title }}</td>
+        <td>
+          <img
+            [src]="pin.image"
+            [alt]="pin.title"
+            width="125px"
+          />
+        </td>
+        <td>
+          @for (customer of pin.customers; track customer.email) {
+            <p class="mb-0">{{customer.name}}</p>
+          }
+        </td>
+        <td><span class="badge" [ngClass]="{'text-bg-success':pin.privacy===PrivacyOptions.PUBLIC, 'text-bg-warning':pin.privacy===PrivacyOptions.PRIVATE}" >{{ pin.privacy.toUpperCase() }}</span></td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end">
+    <button (click)="clearData($event)" class="btn btn-outline-danger">Clear Data</button>
+  </div>
+</div>
+
+<ng-template #noData>
+      <h2 class="text-center text-muted mb-1">No Data</h2>
+      <p *ngIf="!customers || customers.length === 0" class="text-center text-muted">Please start by adding <strong>Customer</strong></p>
+      <p *ngIf="customers && customers.length > 0" class="text-center text-muted">You can now <strong>Add Pin</strong> to add your Customer as a Collaborator</p>
+ 
+</ng-template>

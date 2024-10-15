@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Add Pin</h4>
+  <button type="button" data-dismiss="modal" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <ng-container *ngIf="pinForm">
+    <form #form="ngForm" [formGroup]="pinForm" (ngSubmit)="onSubmit($event)" class="form">
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="title" class="fw-bold">Title</label>
+            <input id="title" type="text" placeholder="Enter the title of pin" formControlName="title" class="form-control"
+                   [ngClass]="{ 'is-invalid': form.submitted && pinForm.controls.title.invalid }"
+            />
+            <div *ngIf="form.submitted && pinForm.controls.title.invalid" class="text-danger">
+              <small *ngIf="pinForm.controls.title.errors?.['required']">Title is required.</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="title" class="fw-bold">Select customers</label>
+            <ng-multiselect-dropdown
+                                     placeholder="Select"
+                                     [data]="customers"
+                                     formControlName="customers"
+                                     [settings]="settings"
+                                     [disabled]="false"
+                                     [class.is-invalid]="form.submitted && pinForm.controls.customers.invalid"
+            >
+            </ng-multiselect-dropdown>
+
+            <div *ngIf="form.submitted && pinForm.controls.customers.invalid" class="text-danger">
+              <small *ngIf="pinForm.controls.customers.errors?.['required']">Customer is required.</small>
+            </div>
+          </div>
+          <div class="form-group ms-1">
+            <label class="fw-bold">Privacy</label>
+            <div class="d-flex gap-3">
+              <label [class.text-danger]="form.submitted && pinForm.controls.privacy.invalid">
+                <input class="me-1" type="radio" value="public" formControlName="privacy">
+                <span>Public</span>
+              </label>
+              <label [class.text-danger]="form.submitted && pinForm.controls.privacy.invalid">
+                <input class="me-1" type="radio" value="private" formControlName="privacy">
+                <span>Private</span>
+              </label>
+              <div *ngIf="form.submitted && pinForm.controls.privacy.invalid" class="text-danger">
+                <small *ngIf="pinForm.controls.privacy.errors?.['required']">Select privacy.</small>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label for="image" class="form-label fw-bold">Choose an image</label>
+            <input formControlName="image" (change)="onImagePicked($event)"
+                   [ngClass]="{ 'is-invalid': form.submitted && pinForm.controls.image.invalid }"
+                   class="form-control" accept="image/png" type="file" id="image">
+            <div *ngIf="form.submitted && pinForm.controls.image.invalid" class="text-danger">
+              <small *ngIf="pinForm.controls.image.errors?.['required']">Image is required.</small>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Add Pin</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
